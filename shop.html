@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop All Products | Madhuraj Sweet House</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .filter-bar {
+            background-color: var(--bg-white);
+            padding: 15px 0;
+            border-radius: var(--radius);
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px var(--shadow);
+            display: flex;
+            justify-content: flex-start;
+            gap: 20px;
+            align-items: center;
+        }
+        .filter-bar select {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            min-width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="header-top-bar">
+            <div class="container top-content">
+                <p>✨ Free Shipping on All Orders Above ₹999 | Flat 15% Off on Custom Hampers</p>
+            </div>
+        </div>
+        <div class="container header-main-nav">
+            <div class="logo">
+                <a href="index.html">Madhuraj <span class="logo-accent">Sweet House</span></a>
+            </div>
+            
+            <nav class="main-nav-links">
+                <a href="shop.html" class="active">Shop All</a>
+                <a href="gifting.html">Gifting & Hampers</a>
+                <a href="achievements.html">Our Legacy</a>
+                <a href="contact.html">Contact Us</a>
+                <a href="trackorder.html">Track Order</a>
+            </nav>
+
+            <div class="header-actions">
+                <button id="search-toggle" aria-label="Search" title="Search"><i class="fas fa-search"></i></button>
+                <button id="profile-btn" aria-label="User Profile" title="Profile/Login"><i class="fas fa-user-circle"></i></button>
+                <button id="cart-btn" aria-label="Shopping Cart" title="View Cart">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span id="cart-count" class="cart-badge">0</span>
+                </button>
+                <button id="menu-toggle" class="menu-toggle" aria-label="Toggle Navigation"><i class="fas fa-bars"></i></button>
+            </div>
+        </div>
+        <div id="search-bar-mobile" class="search-bar-mobile container">
+            <input type="search" placeholder="Search sweets, mithai, or ingredients..." id="main-search-input">
+            <button onclick="window.location.href='shop.html?search=' + document.getElementById('main-search-input').value"><i class="fas fa-search"></i></button>
+        </div>
+    </header>
+
+    <div id="modal-login" class="modal" aria-hidden="true">
+        <div class="modal-content">
+            <span class="close-btn" data-modal="modal-login">&times;</span>
+            <div class="login-form">
+                <h3>Welcome to Madhuraj</h3>
+                <input type="email" placeholder="Email Address" required>
+                <input type="password" placeholder="Password" required>
+                <button class="btn btn-primary" onclick="alert('Simulated Login Successful!')">Log In</button>
+            </div>
+        </div>
+    </div>
+    <div id="modal-cart" class="modal" aria-hidden="true">
+        <div class="modal-content">
+            <span class="close-btn" data-modal="modal-cart">&times;</span>
+            <h3>🛒 Your Cart</h3>
+            <div id="cart-items-display" class="cart-items-list"></div>
+            <div class="cart-summary">
+                <p>Subtotal: <strong id="cart-subtotal">₹0</strong></p>
+                <button class="btn btn-primary" onclick="alert('Simulated Checkout Process!')">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <main class="container">
+        <div class="products-section">
+            <div class="shop-header" style="text-align: center; padding: 30px 0;">
+                <h2 class="section-heading">All Our Delicious Offerings</h2>
+                <p class="section-subheading">Choose from our wide variety of authentic Indian sweets and snacks.</p>
+            </div>
+
+            <div class="filter-bar">
+                <span><i class="fas fa-filter" style="color:var(--primary);"></i> **Filter by Category:**</span>
+                <select id="category-filter">
+                    <option value="all">All Sweets</option>
+                    <option value="laddoo">Laddoo</option>
+                    <option value="barfi">Barfi & Peda</option>
+                    <option value="kaju">Kaju Sweets</option>
+                    <option value="bengali">Bengali Delights</option>
+                    <option value="dryfruit">Dry Fruit</option>
+                    <option value="gifting">Hampers</option>
+                </select>
+
+                <span><i class="fas fa-sort" style="color:var(--primary);"></i> **Sort by Price:**</span>
+                <select id="price-sort">
+                    <option value="default">Default</option>
+                    <option value="low-high">Price: Low to High</option>
+                    <option value="high-low">Price: High to Low</option>
+                </select>
+            </div>
+
+            <div class="product-grid" id="shop-grid">
+                </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <p class="logo">Madhuraj Sweet House</p>
+                <p>The taste of tradition, perfected over decades. Since 1990.</p>
+                <div class="social-icons">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="gifting.html">Corporate Gifting</a></li>
+                    <li><a href="achievements.html">Our Legacy</a></li>
+                    <li><a href="contact.html">Store Locator</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="trackorder.html">Track Order</a></li>
+                    <li><a href="#">FAQ & Help Center</a></li>
+                    <li><a href="#">Shipping Policy</a></li>
+                    <li><a href="#">Returns & Refunds</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Newsletter</h4>
+                <p>Stay updated with our newest sweets and offers.</p>
+                <form onsubmit="alert('Thank you for subscribing!'); return false;">
+                    <input type="email" placeholder="Enter your email" required>
+                    <button type="submit" class="btn btn-primary">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Madhuraj Sweet House. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

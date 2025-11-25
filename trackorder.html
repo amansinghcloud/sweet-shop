@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Order | Madhuraj Sweet House</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="header-top-bar">...</div>
+        <div class="container header-main-nav">
+            <div class="logo"><a href="index.html">Madhuraj <span class="logo-accent">Sweet House</span></a></div>
+            <nav class="main-nav-links">
+                <a href="shop.html">Shop All</a>
+                <a href="gifting.html">Gifting & Hampers</a>
+                <a href="achievements.html">Our Legacy</a>
+                <a href="contact.html">Contact Us</a>
+                <a href="trackorder.html" class="active">Track Order</a>
+            </nav>
+            <div class="header-actions">...</div>
+        </div>
+        <div id="search-bar-mobile" class="search-bar-mobile container">...</div>
+    </header>
+
+    <main class="container">
+        <div class="products-section" style="padding-top: 50px;">
+            <h2 class="section-heading">🚚 Track Your Order</h2>
+            <p class="section-subheading">Enter your Order ID to see the latest status of your delivery.</p>
+
+            <div style="max-width: 600px; margin: 30px auto; padding: 30px; background: var(--bg-white); border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); text-align: center;">
+                <form id="track-form" onsubmit="trackOrder(event)">
+                    <input type="text" placeholder="Enter Order ID (e.g., MS123456)" required id="order-id-input" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem;">
+                    <button class="btn btn-primary" type="submit" id="track-button">Track Now</button>
+                </form>
+                <div id="tracking-result" style="margin-top: 30px; font-size: 1.1rem; min-height: 50px;">
+                    </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container footer-grid">...</div>
+        <div class="footer-bottom"><p>&copy; 2025 Madhuraj Sweet House. All Rights Reserved.</p></div>
+    </footer>
+    <script>
+        function trackOrder(event) {
+            event.preventDefault();
+            const orderId = document.getElementById('order-id-input').value.trim().toUpperCase();
+            const resultEl = document.getElementById('tracking-result');
+            const button = document.getElementById('track-button');
+            
+            button.disabled = true;
+            resultEl.innerHTML = '<i class="fas fa-spinner fa-spin" style="color:var(--primary);"></i> Loading status...';
+
+            setTimeout(() => {
+                let status;
+                let message;
+
+                if (orderId === 'MS123456') {
+                    status = 'Shipped';
+                    message = '<p style="color: #2a9d8f; font-weight: 700;">Order **MS123456** is **OUT FOR DELIVERY** and expected by 6 PM today!</p>';
+                } else if (orderId === 'MS789012') {
+                    status = 'Processing';
+                    message = '<p style="color: #f7c948; font-weight: 700;">Order **MS789012** is currently being **PREPARED FRESH** in our kitchen. Will ship tomorrow.</p>';
+                } else {
+                    status = 'Not Found';
+                    message = '<p style="color: #e63946; font-weight: 700;">Order ID not found. Please check your confirmation email or contact support.</p>';
+                }
+
+                resultEl.innerHTML = message;
+                button.disabled = false;
+            }, 1500); // Simulate network delay
+        }
+    </script>
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gifting & Corporate Hampers | Madhuraj Sweet House</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .gifting-cta {
+            background-color: var(--primary);
+            color: var(--text-light);
+            padding: 40px;
+            border-radius: var(--radius);
+            text-align: center;
+            margin: 40px 0;
+        }
+        .gifting-cta h3 { color: var(--accent); font-size: 2rem; }
+        .gifting-cta p { margin-bottom: 20px; font-size: 1.1rem; }
+        .gifting-features {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin-top: 30px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .gifting-features div {
+            flex-basis: 30%;
+            min-width: 200px;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: var(--radius);
+        }
+        .gifting-features i { font-size: 2rem; color: var(--primary-dark); margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="header-top-bar">...</div>
+        <div class="container header-main-nav">
+            <div class="logo"><a href="index.html">Madhuraj <span class="logo-accent">Sweet House</span></a></div>
+            <nav class="main-nav-links">
+                <a href="shop.html">Shop All</a>
+                <a href="gifting.html" class="active">Gifting & Hampers</a>
+                <a href="achievements.html">Our Legacy</a>
+                <a href="contact.html">Contact Us</a>
+                <a href="trackorder.html">Track Order</a>
+            </nav>
+            <div class="header-actions">...</div>
+        </div>
+        <div id="search-bar-mobile" class="search-bar-mobile container">...</div>
+    </header>
+
+    <main class="container">
+        <div class="products-section" style="padding-top: 50px;">
+            <h2 class="section-heading">🎁 Personalized Gifting Solutions</h2>
+            <p class="section-subheading">Elevate your celebrations with Madhuraj's exquisite, customizable hampers.</p>
+
+            <div class="gifting-cta">
+                <h3>Corporate & Bulk Order Discount</h3>
+                <p>Impress your clients and employees with a taste of tradition. Get up to **30% off** on orders over 50 units.</p>
+                <a href="contact.html" class="btn btn-secondary">Get a Custom Quote <i class="fas fa-handshake"></i></a>
+            </div>
+
+            <h2 class="section-heading" style="margin-top: 40px;">Why Choose Madhuraj Hampers?</h2>
+            <div class="gifting-features">
+                <div><i class="fas fa-box"></i><h4>Custom Packaging</h4><p>Your branding and personalized messages on every box.</p></div>
+                <div><i class="fas fa-palette"></i><h4>Tailored Contents</h4><p>Mix and match from our sweet and savoury range.</p></div>
+                <div><i class="fas fa-truck"></i><h4>Pan-India Delivery</h4><p>Hassle-free shipping to multiple locations across India.</p></div>
+            </div>
+
+            <h2 class="section-heading" style="margin-top: 60px;">Our Signature Hamper Collection</h2>
+            <div class="product-grid">
+                <script>
+                    document.write(createProductCard(productsData.find(p => p.id === 5)));
+                </script>
+                
+                <div class="product-card" data-id="9" data-category="gifting">
+                    <div class="product-image-box">
+                        <img src="https://www.anandsweets.in/cdn/shop/files/Royal_Bandhan.jpg?v=1728366850&width=990" alt="Luxury Dry Fruit Hamper">
+                        <span class="badge">New</span>
+                    </div>
+                    <div class="product-details">
+                        <h4 class="product-name">Luxury Dry Fruit Hamper</h4>
+                        <p class="product-description">A premium selection of imported dates, pistachios, and almonds.</p>
+                        <div class="product-meta">
+                            <span class="product-price">₹3,500</span>
+                            <button class="btn btn-primary btn-add-cart" data-id="9">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container footer-grid">...</div>
+        <div class="footer-bottom"><p>&copy; 2025 Madhuraj Sweet House. All Rights Reserved.</p></div>
+    </footer>
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
