@@ -1,0 +1,5 @@
+node_modules
+.env
+sweetshop.db
+coverage
+.DS_Store

@@ -3,69 +3,256 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Legacy and Achievements | Madhuraj Sweet House</title>
+    <title>Our Legacy and Achievements | Madhuraj Sweet House Since 1990</title>
+    <meta name="description" content="Discover the 35-year culinary heritage of Madhuraj Sweet House, awards, certifications, and dedication to pure cow desi ghee.">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .story-section {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+            align-items: center;
+            background: var(--bg-white);
+            padding: 40px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-sm);
+            margin: 30px 0 50px;
+        }
+        .story-image {
+            width: 100%;
+            height: 380px;
+            object-fit: cover;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+        }
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+            margin: 30px 0;
+        }
+        .achievement-card {
+            background: var(--bg-white);
+            padding: 32px 24px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+        .achievement-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: var(--shadow-md);
+        }
+        .achievement-card i {
+            font-size: 2.5rem;
+            color: var(--accent-dark);
+            margin-bottom: 16px;
+        }
+        @media (max-width: 800px) {
+            .story-section { grid-template-columns: 1fr; }
+            .story-image { height: 260px; }
+        }
+    </style>
 </head>
 <body>
+
+    <!-- Header -->
     <header class="main-header">
-        <div class="header-top-bar">...</div>
+        <div class="header-top-bar">
+            <div class="container top-content">
+                <p>✨ Free Shipping on Orders Above ₹999 | Flat 15% Off with Code <strong>MITHAI15</strong></p>
+                <div class="marquee_design" role="note">
+                    <span>🍯 <strong>मधुराज स्वीट्स:</strong> 1990 से परंपरा, शुद्ध देशी घी और मिठास का अटूट विश्वास ✨</span>
+                </div>
+            </div>
+        </div>
         <div class="container header-main-nav">
-            <div class="logo"><a href="index.html">Madhuraj <span class="logo-accent">Sweet House</span></a></div>
+            <div class="logo">
+                <a href="index.html">Madhuraj <span class="logo-accent">Sweet House</span></a>
+            </div>
+            
             <nav class="main-nav-links">
-                <a href="shop.html">Shop All</a>
+                <a href="shop.html">Shop All Sweets</a>
                 <a href="gifting.html">Gifting & Hampers</a>
                 <a href="achievements.html" class="active">Our Legacy</a>
                 <a href="contact.html">Contact Us</a>
                 <a href="trackorder.html">Track Order</a>
+                <a href="admin.html" class="admin-header-badge" style="display:inline-flex; align-items:center; gap:4px;"><i class="fas fa-shield-alt"></i> Admin</a>
             </nav>
-            <div class="header-actions">...</div>
+
+            <div class="header-actions">
+                <div id="user-nav-greeting"></div>
+                <button id="profile-btn" aria-label="User Profile" title="Profile/Login"><i class="fas fa-user-circle"></i></button>
+                <button id="cart-btn" aria-label="Shopping Cart" title="View Cart">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span id="cart-count" class="cart-badge">0</span>
+                </button>
+                <button id="menu-toggle" class="menu-toggle" aria-label="Toggle Navigation"><i class="fas fa-bars"></i></button>
+            </div>
         </div>
-        <div id="search-bar-mobile" class="search-bar-mobile container">...</div>
     </header>
 
-    <main class="container">
-        <div class="products-section" style="padding-top: 50px;">
-            <h2 class="section-heading">🥇 Our Legacy: Excellence Since 1990</h2>
-            <p class="section-subheading">A journey of tradition, quality, and community love.</p>
+    <!-- Slide-Over Cart Drawer -->
+    <div id="drawer-backdrop" class="drawer-backdrop"></div>
+    <div id="cart-drawer" class="cart-drawer">
+        <div class="drawer-header">
+            <h3><i class="fas fa-shopping-bag"></i> Your Sweet Box</h3>
+            <button id="drawer-close-btn" class="drawer-close-btn">&times;</button>
+        </div>
+        <div id="cart-drawer-body" class="drawer-body"></div>
+        <div class="drawer-footer">
+            <div class="coupon-box">
+                <input type="text" id="coupon-input" placeholder="Promo Code (e.g. MITHAI15)">
+                <button class="btn btn-secondary btn-sm" onclick="applyPromoCoupon()">Apply</button>
+            </div>
+            <div id="coupon-msg" class="coupon-msg"></div>
+            <div class="price-summary-row"><span>Subtotal:</span><strong id="cart-drawer-subtotal">₹0</strong></div>
+            <div class="price-summary-row" id="cart-drawer-discount-row" style="display:none; color:#059669;"><span>Discount:</span><strong id="cart-drawer-discount">- ₹0</strong></div>
+            <div class="price-summary-row total-row"><span>Total to Pay:</span><strong id="cart-drawer-total">₹0</strong></div>
+            <button id="drawer-checkout-btn" class="btn btn-primary" onclick="openCheckoutModal()">Proceed to Checkout <i class="fas fa-arrow-right"></i></button>
+        </div>
+    </div>
 
-            <section style="margin-bottom: 50px; display: flex; flex-wrap: wrap; gap: 30px;">
-                <div style="flex: 1; min-width: 300px;">
-                    <h3 style="color: var(--primary);">The Madhuraj Story</h3>
-                    <p>Founded in 1990 by Shri Ramesh Kumar, Madhuraj Sweet House began as a small shop dedicated to traditional, pure ghee mithai. Our secret lies in using only the finest, freshest ingredients and adhering strictly to time-honored family recipes.</p>
-                    <p style="margin-top: 10px;">For over three decades, we have proudly served generations, becoming synonymous with celebratory moments and festive joy. Our commitment to quality has never wavered.</p>
+    <!-- Modals -->
+    <div id="modal-login" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header"><h3>Welcome to Madhuraj</h3><button class="drawer-close-btn modal-close-btn">&times;</button></div>
+            <div class="modal-body">
+                <div class="auth-tabs">
+                    <button class="auth-tab-btn active" id="tab-login-btn" onclick="switchAuthTab('login')">Log In</button>
+                    <button class="auth-tab-btn" id="tab-register-btn" onclick="switchAuthTab('register')">Create Account</button>
                 </div>
-                <div style="flex: 1; min-width: 300px;">
-                    <img src="WhatsApp Image 2025-11-25 at 00.53.31_b348a900.jpg" alt="Founders of Madhuraj Sweet House" style="width: 100%; border-radius: var(--radius);">
+                <div id="login-form-container">
+                    <form id="form-login">
+                        <div class="form-group"><label>Email Address</label><input type="email" id="login-email" required placeholder="demo@example.com"></div>
+                        <div class="form-group"><label>Password</label><input type="password" id="login-password" required placeholder="••••••••"></div>
+                        <button type="submit" class="btn btn-primary" style="width:100%;">Sign In</button>
+                    </form>
+                    <div style="margin-top:16px; padding:12px; background:#F8F4EF; border-radius:6px; font-size:0.85rem;">
+                        <strong>Demo:</strong> 
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="useDemoCredentials('customer')">Demo Customer</button>
+                        <button type="button" class="btn btn-gold btn-sm" onclick="useDemoCredentials('admin')">Admin Demo</button>
+                    </div>
                 </div>
-            </section>
+            </div>
+        </div>
+    </div>
 
-            <h2 class="section-heading" style="margin-top: 40px;">🏆 Key Achievements</h2>
-            <div class="product-grid" style="gap: 15px;">
-                <div class="product-card" style="padding: 20px; text-align: center;">
-                    <i class="fas fa-trophy" style="font-size: 2.5rem; color: var(--accent); margin-bottom: 10px;"></i>
-                    <h4 style="color: var(--primary);">Best Traditional Mithai Award (2022)</h4>
-                    <p style="font-size: 0.9rem;">Recognized by the Indian Food Council for our classic Besan Laddoo recipe.</p>
+    <div id="modal-checkout" class="modal-overlay">
+        <div class="modal-card" style="max-width:560px;">
+            <div class="modal-header"><h3><i class="fas fa-lock"></i> Express Checkout</h3><button class="drawer-close-btn modal-close-btn">&times;</button></div>
+            <div class="modal-body">
+                <form id="form-checkout" onsubmit="handleCheckoutSubmit(event)">
+                    <div class="form-group"><label>Recipient Name *</label><input type="text" id="checkout-name" required></div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        <div class="form-group"><label>Email *</label><input type="email" id="checkout-email" required></div>
+                        <div class="form-group"><label>Phone *</label><input type="tel" id="checkout-phone" required></div>
+                    </div>
+                    <div class="form-group"><label>Address *</label><textarea id="checkout-address" rows="2" required></textarea></div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        <div class="form-group"><label>City *</label><input type="text" id="checkout-city" required value="New Delhi"></div>
+                        <div class="form-group"><label>Pincode *</label><input type="text" id="checkout-pincode" required value="110001"></div>
+                    </div>
+                    <button type="submit" id="place-order-btn" class="btn btn-primary" style="width:100%;">Confirm & Place Order</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container" style="padding-top: 50px;">
+        <div style="text-align: center;">
+            <h1 class="section-heading">Our Heritage & Culinary Journey</h1>
+            <p class="section-subheading">A generational story of purity, uncompromising taste, and traditional Indian confectionery craft.</p>
+        </div>
+
+        <section class="story-section">
+            <div>
+                <span class="badge-bestseller" style="position:static; display:inline-block; margin-bottom:12px;">ESTABLISHED 1990</span>
+                <h2 style="font-size:2.2rem; margin-bottom:16px;">The Madhuraj Tradition</h2>
+                <p style="margin-bottom:14px; color:var(--text-muted); font-size:1.02rem;">
+                    Founded in 1990 by <strong>Shri Ramesh Kumar</strong>, Madhuraj Sweet House began with a singular devotion: crafting authentic Indian mithai using 100% pure cow desi ghee, hand-churned fresh mawa, and whole unadulterated dry fruits.
+                </p>
+                <p style="margin-bottom:14px; color:var(--text-muted); font-size:1.02rem;">
+                    From morning bati preparations to delicate silver-vark layered kaju katlis, every batch is prepared according to generational family recipes that honor the diverse culinary heritage of Rajasthan, Bengal, and Old Delhi.
+                </p>
+                <p style="color:var(--text-muted); font-size:1.02rem;">
+                    Today, Madhuraj has served over half a million celebratory tables across India, upholding our foundational promise: <em>"Shuddh Desi Ghee aur Parampara ki Meethi Yaadein"</em>.
+                </p>
+                <div style="margin-top:24px;">
+                    <a href="shop.html" class="btn btn-primary">Taste Our Tradition <i class="fas fa-arrow-right"></i></a>
                 </div>
-                <div class="product-card" style="padding: 20px; text-align: center;">
-                    <i class="fas fa-star" style="font-size: 2.5rem; color: var(--accent); margin-bottom: 10px;"></i>
-                    <h4 style="color: var(--primary);">500K Happy Customers</h4>
-                    <p style="font-size: 0.9rem;">Trusted by over half a million families nationwide for their special occasions.</p>
-                </div>
-                <div class="product-card" style="padding: 20px; text-align: center;">
-                    <i class="fas fa-certificate" style="font-size: 2.5rem; color: var(--accent); margin-bottom: 10px;"></i>
-                    <h4 style="color: var(--primary);">ISO 22000 Certified</h4>
-                    <p style="font-size: 0.9rem;">Adherence to the highest global standards for food safety and management.</p>
-                </div>
+            </div>
+            <div>
+                <img src="WhatsApp Image 2025-11-25 at 00.53.31_b348a900.jpg" alt="Madhuraj Sweet House Heritage" class="story-image">
+            </div>
+        </section>
+
+        <!-- Milestones & Achievements -->
+        <div style="text-align: center;">
+            <h2 class="section-heading">Recognitions & Key Milestones</h2>
+            <p class="section-subheading">Honored by culinary councils and cherished by families nationwide.</p>
+        </div>
+
+        <div class="achievement-grid">
+            <div class="achievement-card">
+                <i class="fas fa-trophy"></i>
+                <h4 style="font-size:1.2rem; color:var(--primary); margin-bottom:8px;">Best Traditional Mithai (2022)</h4>
+                <p style="color:var(--text-muted); font-size:0.9rem;">Awarded by the National Indian Culinary Council for our signature slow-roasted Pure Ghee Motichoor Laddoo recipe.</p>
+            </div>
+            <div class="achievement-card">
+                <i class="fas fa-heart"></i>
+                <h4 style="font-size:1.2rem; color:var(--primary); margin-bottom:8px;">500K+ Celebrated Families</h4>
+                <p style="color:var(--text-muted); font-size:0.9rem;">Trusted across generations for weddings, Diwali festivities, and festive gifting with consistent authentic taste.</p>
+            </div>
+            <div class="achievement-card">
+                <i class="fas fa-shield-halved"></i>
+                <h4 style="font-size:1.2rem; color:var(--primary); margin-bottom:8px;">ISO 22000 & FSSAI Certified</h4>
+                <p style="color:var(--text-muted); font-size:0.9rem;">Stringent hygiene protocols, zero artificial preservatives, and automated vacuum aroma sealing for maximum freshness.</p>
+            </div>
+            <div class="achievement-card">
+                <i class="fas fa-award"></i>
+                <h4 style="font-size:1.2rem; color:var(--primary); margin-bottom:8px;">Heritage Sweet House of the Year</h4>
+                <p style="color:var(--text-muted); font-size:0.9rem;">Recognized for preserving time-honored artisanal confectionery methods in an era of mass commercialization.</p>
             </div>
         </div>
     </main>
 
-    <footer class="main-footer">
-        <div class="container footer-grid">...</div>
+    <!-- Footer -->
+    <footer class="main-footer" style="margin-top:60px;">
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <h4 style="font-size:1.5rem; color:#FFF;">Madhuraj Sweet House</h4>
+                <p>Pure Cow Ghee Indian Mithai & Luxury Confectionery Since 1990.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="shop.html">Shop Sweets</a></li>
+                    <li><a href="gifting.html">Corporate Gifting</a></li>
+                    <li><a href="achievements.html">Our Legacy</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Customer Support</h4>
+                <ul>
+                    <li><a href="trackorder.html">Track Order</a></li>
+                    <li><a href="admin.html">Admin Portal</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Promo Code</h4>
+                <p>Use coupon <strong style="color:var(--accent);">MITHAI15</strong> for 15% discount on all orders above ₹500.</p>
+            </div>
+        </div>
         <div class="footer-bottom"><p>&copy; 2025 Madhuraj Sweet House. All Rights Reserved.</p></div>
     </footer>
-    <script src="data.js"></script>
+
     <script src="script.js"></script>
 </body>
 </html>

@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Madhuraj Sweet House | Authentic Indian Sweets & Mithai</title>
+    <title>Madhuraj Sweet House | Authentic Indian Sweets & Mithai Since 1990</title>
+    <meta name="description" content="Handcrafted traditional Indian sweets made with 100% pure desi ghee. Order Kaju Katli, Motichoor Laddoo, Bengali Sandesh, and Festive Hampers with express doorstep delivery.">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
+    <!-- Header & Navigation -->
     <header class="main-header">
         <div class="header-top-bar">
             <div class="container top-content">
-                <p>✨ Free Shipping on All Orders Above ₹999 | Flat 15% Off on Custom Hampers</p>
-            <div class="marquee_design" role="note">
-            <marquee> 🎉 **मधुराज में आपका स्वागत है!** 🍯 1990 से परंपरा और मिठास का स्वाद... ✨ </marquee>
-        </div>
-            
+                <p>✨ Free Shipping on Orders Above ₹999 | Flat 15% Off with Code <strong>MITHAI15</strong></p>
+                <div class="marquee_design" role="note">
+                    <span>🍯 <strong>मधुराज स्वीट्स:</strong> 1990 से परंपरा, शुद्ध देशी घी और मिठास का अटूट विश्वास ✨</span>
+                </div>
             </div>
         </div>
         <div class="container header-main-nav">
@@ -25,15 +26,16 @@
             </div>
             
             <nav class="main-nav-links">
-                <a href="shop.html">Shop All</a>
+                <a href="shop.html">Shop All Sweets</a>
                 <a href="gifting.html">Gifting & Hampers</a>
                 <a href="achievements.html">Our Legacy</a>
                 <a href="contact.html">Contact Us</a>
                 <a href="trackorder.html">Track Order</a>
+                <a href="admin.html" class="admin-header-badge" style="display:inline-flex; align-items:center; gap:4px;"><i class="fas fa-shield-alt"></i> Admin</a>
             </nav>
 
             <div class="header-actions">
-                <button id="search-toggle" aria-label="Search" title="Search"><i class="fas fa-search"></i></button>
+                <div id="user-nav-greeting"></div>
                 <button id="profile-btn" aria-label="User Profile" title="Profile/Login"><i class="fas fa-user-circle"></i></button>
                 <button id="cart-btn" aria-label="Shopping Cart" title="View Cart">
                     <i class="fas fa-shopping-bag"></i>
@@ -42,89 +44,292 @@
                 <button id="menu-toggle" class="menu-toggle" aria-label="Toggle Navigation"><i class="fas fa-bars"></i></button>
             </div>
         </div>
-        
-        <div id="search-bar-mobile" class="search-bar-mobile container">
-            <input type="search" placeholder="Search sweets, mithai, or ingredients..." id="main-search-input">
-            <button onclick="window.location.href='shop.html?search=' + document.getElementById('main-search-input').value"><i class="fas fa-search"></i></button>
-        </div>
     </header>
 
-    <div id="modal-login" class="modal" aria-hidden="true">
-        <div class="modal-content">
-            <span class="close-btn" data-modal="modal-login">&times;</span>
-            <div class="login-form">
+    <!-- Slide-Over Cart Drawer -->
+    <div id="drawer-backdrop" class="drawer-backdrop"></div>
+    <div id="cart-drawer" class="cart-drawer">
+        <div class="drawer-header">
+            <h3><i class="fas fa-shopping-bag"></i> Your Sweet Box</h3>
+            <button id="drawer-close-btn" class="drawer-close-btn">&times;</button>
+        </div>
+        <div id="cart-drawer-body" class="drawer-body">
+            <!-- Rendered dynamically by script.js -->
+        </div>
+        <div class="drawer-footer">
+            <div class="coupon-box">
+                <input type="text" id="coupon-input" placeholder="Promo Code (e.g. MITHAI15)">
+                <button class="btn btn-secondary btn-sm" onclick="applyPromoCoupon()">Apply</button>
+            </div>
+            <div id="coupon-msg" class="coupon-msg"></div>
+            <div class="price-summary-row">
+                <span>Subtotal:</span>
+                <strong id="cart-drawer-subtotal">₹0</strong>
+            </div>
+            <div class="price-summary-row" id="cart-drawer-discount-row" style="display:none; color:#059669;">
+                <span>Discount:</span>
+                <strong id="cart-drawer-discount">- ₹0</strong>
+            </div>
+            <div class="price-summary-row total-row">
+                <span>Total to Pay:</span>
+                <strong id="cart-drawer-total">₹0</strong>
+            </div>
+            <button id="drawer-checkout-btn" class="btn btn-primary" onclick="openCheckoutModal()">Proceed to Checkout <i class="fas fa-arrow-right"></i></button>
+        </div>
+    </div>
+
+    <!-- Auth Modal (Login / Register with 1-Click Evaluator Demo Fill) -->
+    <div id="modal-login" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
                 <h3>Welcome to Madhuraj</h3>
-                <p>Login to manage your orders and loyalty points.</p>
-                <input type="email" placeholder="Email Address" required>
-                <input type="password" placeholder="Password" required>
-                <button class="btn btn-primary" onclick="alert('Simulated Login Successful!')">Log In</button>
-                <p class="modal-footer-text">Don't have an account? <a href="#" onclick="alert('Simulated Register Page!')">Register</a></p>
+                <button class="drawer-close-btn modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="auth-tabs">
+                    <button class="auth-tab-btn active" id="tab-login-btn" onclick="switchAuthTab('login')">Log In</button>
+                    <button class="auth-tab-btn" id="tab-register-btn" onclick="switchAuthTab('register')">Create Account</button>
+                </div>
+                <div id="login-form-container">
+                    <form id="form-login">
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="login-email" required placeholder="demo@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="login-password" required placeholder="••••••••">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width:100%;"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+                    </form>
+                    <div style="margin-top:16px; padding:12px; background:#F8F4EF; border-radius:6px; font-size:0.85rem; border:1px dashed #D5C6BA;">
+                        <strong style="color:var(--primary); display:block; margin-bottom:6px;">⚡ Quick Evaluator Demo Fill:</strong>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="useDemoCredentials('customer')" style="margin-right:6px;">Demo Customer</button>
+                        <button type="button" class="btn btn-gold btn-sm" onclick="useDemoCredentials('admin')">Admin Demo</button>
+                    </div>
+                </div>
+                <div id="register-form-container" style="display:none;">
+                    <form id="form-register">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="reg-name" required placeholder="Rohit Sharma">
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="reg-email" required placeholder="rohit@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Password (min 6 characters)</label>
+                            <input type="password" id="reg-password" required minlength="6" placeholder="••••••••">
+                        </div>
+                        <div class="form-group">
+                            <label>Mobile Number (Optional)</label>
+                            <input type="tel" id="reg-phone" placeholder="+91 9811223344">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width:100%;">Create Account</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 
-    <div id="modal-cart" class="modal" aria-hidden="true">
-        <div class="modal-content">
-            <span class="close-btn" data-modal="modal-cart">&times;</span>
-            <h3>🛒 Your Cart</h3>
-            <div id="cart-items-display" class="cart-items-list">
-                <p id="empty-cart-message">Your cart is empty. Start shopping!</p>
+    <!-- Quick View Modal -->
+    <div id="modal-quick-view" class="modal-overlay">
+        <div class="modal-card" style="max-width:720px;">
+            <div class="modal-header">
+                <h3>Sweet Details & Selection</h3>
+                <button class="drawer-close-btn modal-close-btn">&times;</button>
             </div>
-            <div class="cart-summary">
-                <p>Subtotal: <strong id="cart-subtotal">₹0</strong></p>
-                <button class="btn btn-primary" onclick="alert('Simulated Checkout Process!')">Proceed to Checkout</button>
-                <button class="btn btn-secondary" onclick="window.location.href='shop.html'">Continue Shopping</button>
+            <div class="modal-body" id="quick-view-body">
+                <!-- Injected by script.js -->
             </div>
         </div>
     </div>
 
+    <!-- Checkout Modal -->
+    <div id="modal-checkout" class="modal-overlay">
+        <div class="modal-card" style="max-width:560px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-lock" style="color:var(--accent-dark);"></i> Express Checkout</h3>
+                <button class="drawer-close-btn modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="form-checkout" onsubmit="handleCheckoutSubmit(event)">
+                    <div class="form-group">
+                        <label>Recipient Full Name *</label>
+                        <input type="text" id="checkout-name" required placeholder="Recipient's Name">
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        <div class="form-group">
+                            <label>Email Address *</label>
+                            <input type="email" id="checkout-email" required placeholder="order@domain.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Mobile Number *</label>
+                            <input type="tel" id="checkout-phone" required placeholder="+91 9811223344">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Doorstep Delivery Address *</label>
+                        <textarea id="checkout-address" rows="2" required placeholder="House / Flat No., Society / Street, Landmark"></textarea>
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        <div class="form-group">
+                            <label>City *</label>
+                            <input type="text" id="checkout-city" required value="New Delhi">
+                        </div>
+                        <div class="form-group">
+                            <label>Pincode *</label>
+                            <input type="text" id="checkout-pincode" required value="110001">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Payment Method</label>
+                        <div class="payment-options">
+                            <label class="payment-option-card selected">
+                                <input type="radio" name="payment_method" value="Cash on Delivery" checked style="display:none;">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <span>Cash on Delivery</span>
+                            </label>
+                            <label class="payment-option-card">
+                                <input type="radio" name="payment_method" value="UPI / Online" style="display:none;">
+                                <i class="fas fa-mobile-alt"></i>
+                                <span>Instant UPI</span>
+                            </label>
+                            <label class="payment-option-card">
+                                <input type="radio" name="payment_method" value="Credit/Debit Card" style="display:none;">
+                                <i class="fas fa-credit-card"></i>
+                                <span>Card</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Special Chef Instructions (Optional)</label>
+                        <input type="text" id="checkout-notes" placeholder="e.g. Ring bell twice, gift wrap packaging">
+                    </div>
+                    <div style="background:#FAF5EF; padding:14px; border-radius:6px; margin:16px 0;">
+                        <div class="price-summary-row"><span>Subtotal:</span><strong id="checkout-subtotal">₹0</strong></div>
+                        <div class="price-summary-row" style="color:#059669;"><span>Discount:</span><strong id="checkout-discount">- ₹0</strong></div>
+                        <div class="price-summary-row total-row"><span>Total to Pay:</span><strong id="checkout-total">₹0</strong></div>
+                    </div>
+                    <button type="submit" id="place-order-btn" class="btn btn-primary" style="width:100%;">
+                        <i class="fas fa-lock"></i> Confirm & Place Order
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Success Celebration Modal -->
+    <div id="modal-order-success" class="modal-overlay">
+        <div class="modal-card" style="text-align:center; max-width:480px;">
+            <div class="modal-body" style="padding:40px 24px;">
+                <div style="width:70px; height:70px; background:#D1FAE5; color:#059669; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2rem; margin:0 auto 16px;">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h3 style="font-size:1.8rem; margin-bottom:8px;">Order Placed Successfully!</h3>
+                <p style="color:var(--text-muted); margin-bottom:20px;">Your delicious mithai is now queued in our kitchen to be handcrafted fresh with pure cow desi ghee.</p>
+                <div style="background:#FAF5EF; padding:16px; border-radius:8px; margin-bottom:24px; border:1px dashed #D5C6BA;">
+                    <span style="font-size:0.85rem; color:#777; display:block;">YOUR LIVE TRACKING CODE:</span>
+                    <strong id="confirmed-tracking-id" style="font-size:1.7rem; color:var(--primary); letter-spacing:0.05em;">MS-1001</strong>
+                    <div style="font-size:0.9rem; margin-top:6px;">Total Amount: <strong id="confirmed-order-total">₹0</strong></div>
+                </div>
+                <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+                    <button id="confirmed-track-btn" class="btn btn-primary">Track Order Live <i class="fas fa-arrow-right"></i></button>
+                    <button class="btn btn-secondary modal-close-btn">Keep Shopping</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
     <main>
         <section class="hero-section">
             <div class="container hero-content">
-                <h1>Crafting Happiness Since 1990</h1>
-                <h2>Authentic Indian Sweets & Savouries, Delivered to Your Doorstep.</h2>
-                <a href="shop.html" class="btn btn-primary btn-large">Shop The Festive Collection <i class="fas fa-arrow-right"></i></a>
+                <h1>Crafting Royal Happiness Since 1990</h1>
+                <h2>Authentic Indian Mithais, Handcrafted with 100% Pure Desi Ghee & Delivered Fresh to Your Doorstep.</h2>
+                <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+                    <a href="shop.html" class="btn btn-gold btn-large">Shop Festive Collection <i class="fas fa-arrow-right"></i></a>
+                    <a href="trackorder.html" class="btn btn-secondary btn-large" style="border-color:#FFF; color:#FFF !important;">Track Live Order <i class="fas fa-truck"></i></a>
+                </div>
+
+                <div class="hero-badges">
+                    <div class="hero-badge-item"><i class="fas fa-medal" style="color:var(--accent);"></i> 35+ Years Culinary Legacy</div>
+                    <div class="hero-badge-item"><i class="fas fa-burn" style="color:var(--accent);"></i> 100% Pure Desi Ghee</div>
+                    <div class="hero-badge-item"><i class="fas fa-box-open" style="color:var(--accent);"></i> Vacuum Aroma-Sealed</div>
+                    <div class="hero-badge-item"><i class="fas fa-shipping-fast" style="color:var(--accent);"></i> Express Doorstep Dispatch</div>
+                </div>
             </div>
         </section>
 
+        <!-- Category Filter Quick Bar -->
         <section class="category-bar">
             <div class="container categories-list">
-                <a href="shop.html?category=laddoo" class="category-item"><i class="fas fa-cookie-bite"></i> Laddoo</a>
-                <a href="shop.html?category=barfi" class="category-item"><i class="fas fa-cube"></i> Barfi & Peda</a>
-                <a href="shop.html?category=kaju" class="category-item"><i class="fas fa-gem"></i> Kaju Sweets</a>
+                <a href="shop.html?category=all" class="category-item"><i class="fas fa-th"></i> All Sweets</a>
+                <a href="shop.html?category=laddoo" class="category-item"><i class="fas fa-cookie-bite"></i> Motichoor & Laddoo</a>
+                <a href="shop.html?category=kaju" class="category-item"><i class="fas fa-gem"></i> Kaju Katli & Rolls</a>
+                <a href="shop.html?category=barfi" class="category-item"><i class="fas fa-cube"></i> Royal Barfi & Peda</a>
                 <a href="shop.html?category=bengali" class="category-item"><i class="fas fa-water"></i> Bengali Delights</a>
-                <a href="shop.html?category=dryfruit" class="category-item"><i class="fas fa-leaf"></i> Dry Fruit & Nuts</a>
+                <a href="shop.html?category=dryfruit" class="category-item"><i class="fas fa-leaf"></i> Dry Fruits & Nuts</a>
+                <a href="shop.html?category=gifting" class="category-item"><i class="fas fa-gift"></i> Luxury Hampers</a>
             </div>
         </section>
 
+        <!-- Bestsellers Section -->
         <section class="products-section container">
             <h2 class="section-heading">👑 Madhuraj Bestsellers</h2>
-            <p class="section-subheading">Our most loved and freshly prepared mithais.</p>
+            <p class="section-subheading">Our most cherished signature mithais, prepared fresh daily in our kitchen.</p>
 
             <div class="product-grid" id="bestseller-grid">
-                </div>
+                <!-- Products loaded from REST API -->
+            </div>
             
-            <div style="text-align:center; margin-top:30px;">
-                <a href="shop.html" class="btn btn-secondary">View All Products</a>
+            <div style="text-align:center; margin-top:40px;">
+                <a href="shop.html" class="btn btn-secondary btn-large">View Full Sweets Catalog <i class="fas fa-arrow-right"></i></a>
             </div>
         </section>
 
+        <!-- Trust Signals Banner -->
         <section class="trust-banner">
             <div class="container trust-items">
-                <div><i class="fas fa-shield-alt"></i> 100% Quality Guaranteed</div>
-                <div><i class="fas fa-shipping-fast"></i> Express Delivery</div>
-                <div><i class="fas fa-hand-holding-heart"></i> Handcrafted Daily</div>
-                <div><i class="fas fa-award"></i> Award-Winning Taste</div>
+                <div class="trust-item-box">
+                    <i class="fas fa-shield-alt"></i>
+                    <div>
+                        <strong>100% Quality Assurance</strong>
+                        <div style="font-size:0.8rem; color:#777;">FSSAI Certified Fresh Preparation</div>
+                    </div>
+                </div>
+                <div class="trust-item-box">
+                    <i class="fas fa-shipping-fast"></i>
+                    <div>
+                        <strong>Express Delivery</strong>
+                        <div style="font-size:0.8rem; color:#777;">Same-day dispatch for Delhi NCR</div>
+                    </div>
+                </div>
+                <div class="trust-item-box">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <div>
+                        <strong>Handcrafted Daily</strong>
+                        <div style="font-size:0.8rem; color:#777;">Zero artificial preservatives</div>
+                    </div>
+                </div>
+                <div class="trust-item-box">
+                    <i class="fas fa-award"></i>
+                    <div>
+                        <strong>Award-Winning Taste</strong>
+                        <div style="font-size:0.8rem; color:#777;">Over 50,000+ satisfied families</div>
+                    </div>
+                </div>
             </div>
         </section>
-
     </main>
 
+    <!-- Footer -->
     <footer class="main-footer">
         <div class="container footer-grid">
             <div class="footer-col">
-                <p class="logo">Madhuraj Sweet House</p>
-                <p>The taste of tradition, perfected over decades. Since 1990.</p>
+                <h4 style="font-size:1.5rem; color:#FFF;">Madhuraj Sweet House</h4>
+                <p>Preserving the golden heritage of authentic Indian sweets since 1990. Prepared with devotion, pure cow desi ghee, and generational secret recipes.</p>
                 <div class="social-icons">
                     <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
                     <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
@@ -132,38 +337,36 @@
                 </div>
             </div>
             <div class="footer-col">
-                <h4>Quick Links</h4>
+                <h4>Explore</h4>
                 <ul>
-                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="shop.html">Shop All Mithai</a></li>
                     <li><a href="gifting.html">Corporate Gifting</a></li>
                     <li><a href="achievements.html">Our Legacy</a></li>
                     <li><a href="contact.html">Store Locator</a></li>
                 </ul>
             </div>
             <div class="footer-col">
-                <h4>Support</h4>
+                <h4>Customer Care</h4>
                 <ul>
-                    <li><a href="trackorder.html">Track Order</a></li>
-                    <li><a href="#">FAQ & Help Center</a></li>
-                    <li><a href="#">Shipping Policy</a></li>
-                    <li><a href="#">Returns & Refunds</a></li>
+                    <li><a href="trackorder.html">Track Order Live</a></li>
+                    <li><a href="admin.html">Admin Management</a></li>
+                    <li><a href="contact.html">Help & Inquiries</a></li>
+                    <li><a href="#">Shipping & Returns</a></li>
                 </ul>
             </div>
             <div class="footer-col">
-                <h4>Newsletter</h4>
-                <p>Stay updated with our newest sweets and offers.</p>
-                <form onsubmit="alert('Thank you for subscribing!'); return false;">
-                    <input type="email" placeholder="Enter your email" required>
-                    <button type="submit" class="btn btn-primary">Subscribe</button>
-                </form>
+                <h4>Festive Offers</h4>
+                <p>Apply promo code <strong style="color:var(--accent);">MITHAI15</strong> during checkout to receive 15% instant discount on orders above ₹500.</p>
+                <div style="margin-top:14px;">
+                    <a href="shop.html" class="btn btn-gold btn-sm">Order Sweets Now</a>
+                </div>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 Madhuraj Sweet House. All Rights Reserved.</p>
+            <p>&copy; 2025 Madhuraj Sweet House. All Rights Reserved. Built with Node.js, Express, SQLite & Vanilla JS.</p>
         </div>
     </footer>
 
-    <script src="data.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

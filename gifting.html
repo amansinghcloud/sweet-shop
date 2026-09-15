@@ -3,102 +3,296 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gifting & Corporate Hampers | Madhuraj Sweet House</title>
+    <title>Festive Gifting & Corporate Hampers | Madhuraj Sweet House</title>
+    <meta name="description" content="Personalized Indian sweet hampers, wedding gift boxes, and corporate festive packs handcrafted with pure cow desi ghee.">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        .gifting-cta {
-            background-color: var(--primary);
-            color: var(--text-light);
-            padding: 40px;
-            border-radius: var(--radius);
+        .gifting-hero-banner {
+            background: linear-gradient(135deg, rgba(122, 12, 30, 0.92), rgba(88, 6, 20, 0.95)),
+                        url('https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=1200&q=80') center/cover;
+            color: #FFFFFF;
+            padding: 60px 40px;
+            border-radius: var(--radius-md);
             text-align: center;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-md);
+        }
+        .gifting-features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
             margin: 40px 0;
         }
-        .gifting-cta h3 { color: var(--accent); font-size: 2rem; }
-        .gifting-cta p { margin-bottom: 20px; font-size: 1.1rem; }
-        .gifting-features {
-            display: flex;
-            justify-content: space-around;
+        .gifting-feature-card {
+            background: var(--bg-white);
+            padding: 30px 24px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
             text-align: center;
-            margin-top: 30px;
-            gap: 20px;
-            flex-wrap: wrap;
+            box-shadow: var(--shadow-sm);
         }
-        .gifting-features div {
-            flex-basis: 30%;
-            min-width: 200px;
-            padding: 15px;
-            border: 1px solid #eee;
-            border-radius: var(--radius);
+        .gifting-feature-card i {
+            font-size: 2.4rem;
+            color: var(--accent-dark);
+            margin-bottom: 14px;
         }
-        .gifting-features i { font-size: 2rem; color: var(--primary-dark); margin-bottom: 10px; }
     </style>
 </head>
 <body>
+
+    <!-- Header -->
     <header class="main-header">
-        <div class="header-top-bar">...</div>
+        <div class="header-top-bar">
+            <div class="container top-content">
+                <p>✨ Free Shipping on Orders Above ₹999 | Flat 15% Off with Code <strong>MITHAI15</strong></p>
+                <div class="marquee_design" role="note">
+                    <span>🍯 <strong>मधुराज स्वीट्स:</strong> 1990 से परंपरा, शुद्ध देशी घी और मिठास का अटूट विश्वास ✨</span>
+                </div>
+            </div>
+        </div>
         <div class="container header-main-nav">
-            <div class="logo"><a href="index.html">Madhuraj <span class="logo-accent">Sweet House</span></a></div>
+            <div class="logo">
+                <a href="index.html">Madhuraj <span class="logo-accent">Sweet House</span></a>
+            </div>
+            
             <nav class="main-nav-links">
-                <a href="shop.html">Shop All</a>
+                <a href="shop.html">Shop All Sweets</a>
                 <a href="gifting.html" class="active">Gifting & Hampers</a>
                 <a href="achievements.html">Our Legacy</a>
                 <a href="contact.html">Contact Us</a>
                 <a href="trackorder.html">Track Order</a>
+                <a href="admin.html" class="admin-header-badge" style="display:inline-flex; align-items:center; gap:4px;"><i class="fas fa-shield-alt"></i> Admin</a>
             </nav>
-            <div class="header-actions">...</div>
+
+            <div class="header-actions">
+                <div id="user-nav-greeting"></div>
+                <button id="profile-btn" aria-label="User Profile" title="Profile/Login"><i class="fas fa-user-circle"></i></button>
+                <button id="cart-btn" aria-label="Shopping Cart" title="View Cart">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span id="cart-count" class="cart-badge">0</span>
+                </button>
+                <button id="menu-toggle" class="menu-toggle" aria-label="Toggle Navigation"><i class="fas fa-bars"></i></button>
+            </div>
         </div>
-        <div id="search-bar-mobile" class="search-bar-mobile container">...</div>
     </header>
 
-    <main class="container">
-        <div class="products-section" style="padding-top: 50px;">
-            <h2 class="section-heading">🎁 Personalized Gifting Solutions</h2>
-            <p class="section-subheading">Elevate your celebrations with Madhuraj's exquisite, customizable hampers.</p>
-
-            <div class="gifting-cta">
-                <h3>Corporate & Bulk Order Discount</h3>
-                <p>Impress your clients and employees with a taste of tradition. Get up to **30% off** on orders over 50 units.</p>
-                <a href="contact.html" class="btn btn-secondary">Get a Custom Quote <i class="fas fa-handshake"></i></a>
+    <!-- Slide-Over Cart Drawer -->
+    <div id="drawer-backdrop" class="drawer-backdrop"></div>
+    <div id="cart-drawer" class="cart-drawer">
+        <div class="drawer-header">
+            <h3><i class="fas fa-shopping-bag"></i> Your Sweet Box</h3>
+            <button id="drawer-close-btn" class="drawer-close-btn">&times;</button>
+        </div>
+        <div id="cart-drawer-body" class="drawer-body"></div>
+        <div class="drawer-footer">
+            <div class="coupon-box">
+                <input type="text" id="coupon-input" placeholder="Promo Code (e.g. MITHAI15)">
+                <button class="btn btn-secondary btn-sm" onclick="applyPromoCoupon()">Apply</button>
             </div>
+            <div id="coupon-msg" class="coupon-msg"></div>
+            <div class="price-summary-row"><span>Subtotal:</span><strong id="cart-drawer-subtotal">₹0</strong></div>
+            <div class="price-summary-row" id="cart-drawer-discount-row" style="display:none; color:#059669;"><span>Discount:</span><strong id="cart-drawer-discount">- ₹0</strong></div>
+            <div class="price-summary-row total-row"><span>Total to Pay:</span><strong id="cart-drawer-total">₹0</strong></div>
+            <button id="drawer-checkout-btn" class="btn btn-primary" onclick="openCheckoutModal()">Proceed to Checkout <i class="fas fa-arrow-right"></i></button>
+        </div>
+    </div>
 
-            <h2 class="section-heading" style="margin-top: 40px;">Why Choose Madhuraj Hampers?</h2>
-            <div class="gifting-features">
-                <div><i class="fas fa-box"></i><h4>Custom Packaging</h4><p>Your branding and personalized messages on every box.</p></div>
-                <div><i class="fas fa-palette"></i><h4>Tailored Contents</h4><p>Mix and match from our sweet and savoury range.</p></div>
-                <div><i class="fas fa-truck"></i><h4>Pan-India Delivery</h4><p>Hassle-free shipping to multiple locations across India.</p></div>
-            </div>
-
-            <h2 class="section-heading" style="margin-top: 60px;">Our Signature Hamper Collection</h2>
-            <div class="product-grid">
-                <script>
-                    document.write(createProductCard(productsData.find(p => p.id === 5)));
-                </script>
-                
-                <div class="product-card" data-id="9" data-category="gifting">
-                    <div class="product-image-box">
-                        <img src="https://www.anandsweets.in/cdn/shop/files/Royal_Bandhan.jpg?v=1728366850&width=990" alt="Luxury Dry Fruit Hamper">
-                        <span class="badge">New</span>
-                    </div>
-                    <div class="product-details">
-                        <h4 class="product-name">Luxury Dry Fruit Hamper</h4>
-                        <p class="product-description">A premium selection of imported dates, pistachios, and almonds.</p>
-                        <div class="product-meta">
-                            <span class="product-price">₹3,500</span>
-                            <button class="btn btn-primary btn-add-cart" data-id="9">Add to Cart</button>
-                        </div>
+    <!-- Modals -->
+    <div id="modal-login" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header"><h3>Welcome to Madhuraj</h3><button class="drawer-close-btn modal-close-btn">&times;</button></div>
+            <div class="modal-body">
+                <div class="auth-tabs">
+                    <button class="auth-tab-btn active" id="tab-login-btn" onclick="switchAuthTab('login')">Log In</button>
+                    <button class="auth-tab-btn" id="tab-register-btn" onclick="switchAuthTab('register')">Create Account</button>
+                </div>
+                <div id="login-form-container">
+                    <form id="form-login">
+                        <div class="form-group"><label>Email Address</label><input type="email" id="login-email" required placeholder="demo@example.com"></div>
+                        <div class="form-group"><label>Password</label><input type="password" id="login-password" required placeholder="••••••••"></div>
+                        <button type="submit" class="btn btn-primary" style="width:100%;">Sign In</button>
+                    </form>
+                    <div style="margin-top:16px; padding:12px; background:#F8F4EF; border-radius:6px; font-size:0.85rem;">
+                        <strong>Demo:</strong> 
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="useDemoCredentials('customer')">Demo Customer</button>
+                        <button type="button" class="btn btn-gold btn-sm" onclick="useDemoCredentials('admin')">Admin Demo</button>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div id="modal-quick-view" class="modal-overlay">
+        <div class="modal-card" style="max-width:720px;">
+            <div class="modal-header"><h3>Sweet Details & Selection</h3><button class="drawer-close-btn modal-close-btn">&times;</button></div>
+            <div class="modal-body" id="quick-view-body"></div>
+        </div>
+    </div>
+
+    <div id="modal-checkout" class="modal-overlay">
+        <div class="modal-card" style="max-width:560px;">
+            <div class="modal-header"><h3><i class="fas fa-lock"></i> Express Checkout</h3><button class="drawer-close-btn modal-close-btn">&times;</button></div>
+            <div class="modal-body">
+                <form id="form-checkout" onsubmit="handleCheckoutSubmit(event)">
+                    <div class="form-group"><label>Recipient Name *</label><input type="text" id="checkout-name" required></div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        <div class="form-group"><label>Email *</label><input type="email" id="checkout-email" required></div>
+                        <div class="form-group"><label>Phone *</label><input type="tel" id="checkout-phone" required></div>
+                    </div>
+                    <div class="form-group"><label>Address *</label><textarea id="checkout-address" rows="2" required></textarea></div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        <div class="form-group"><label>City *</label><input type="text" id="checkout-city" required value="New Delhi"></div>
+                        <div class="form-group"><label>Pincode *</label><input type="text" id="checkout-pincode" required value="110001"></div>
+                    </div>
+                    <button type="submit" id="place-order-btn" class="btn btn-primary" style="width:100%;">Confirm & Place Order</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container" style="padding-top: 50px;">
+        <div class="gifting-hero-banner">
+            <h1 style="color:var(--accent-light); font-size:3rem; margin-bottom:12px;">Royal Festive Hampers & Corporate Gifting</h1>
+            <p style="font-size:1.15rem; max-width:750px; margin:0 auto 24px; color:#F5ECE4;">Celebrate Diwali, Raksha Bandhan, weddings, and milestones with Madhuraj's handcrafted luxury sweet boxes and embossed dry fruit selections.</p>
+            <div style="display:flex; justify-content:center; gap:14px; flex-wrap:wrap;">
+                <a href="shop.html?category=gifting" class="btn btn-gold">Explore Gift Boxes</a>
+                <a href="#custom-hamper-form" class="btn btn-secondary" style="border-color:#FFF; color:#FFF !important;">Request Bulk Quotation</a>
+            </div>
+        </div>
+
+        <div style="text-align:center;">
+            <h2 class="section-heading">Why Leading Enterprises Choose Madhuraj</h2>
+            <p class="section-subheading">Over 35 years of gifting excellence with bespoke packaging and pan-India express dispatch.</p>
+        </div>
+
+        <div class="gifting-features-grid">
+            <div class="gifting-feature-card">
+                <i class="fas fa-palette"></i>
+                <h4 style="font-size:1.2rem; margin-bottom:8px;">Custom Metallic Embossing</h4>
+                <p style="color:var(--text-muted); font-size:0.9rem;">Personalize your hamper boxes with corporate brand logos, festive greetings, and custom greeting cards.</p>
+            </div>
+            <div class="gifting-feature-card">
+                <i class="fas fa-cookie-bite"></i>
+                <h4 style="font-size:1.2rem; margin-bottom:8px;">Curated Mithai & Nut Mix</h4>
+                <p style="color:var(--text-muted); font-size:0.9rem;">Choose from pure desi ghee motichoor, authentic kaju katli, pistachio fudges, and premium dry fruits.</p>
+            </div>
+            <div class="gifting-feature-card">
+                <i class="fas fa-truck-fast"></i>
+                <h4 style="font-size:1.2rem; margin-bottom:8px;">Multi-City Direct Dispatch</h4>
+                <p style="color:var(--text-muted); font-size:0.9rem;">Seamless doorstep dispatch directly to employee and client residential addresses across India.</p>
+            </div>
+        </div>
+
+        <!-- Featured Gifting Cards from Catalog -->
+        <h2 class="section-heading" style="margin-top: 50px;">Featured Signature Hampers</h2>
+        <p class="section-subheading">Available for instant online ordering or bulk custom reservations.</p>
+
+        <div class="product-grid" id="gifting-grid">
+            <!-- Loaded via script.js -->
+        </div>
+
+        <!-- Custom Hamper Inquiry Section -->
+        <div id="custom-hamper-form" style="max-width:700px; margin:60px auto; background:var(--bg-white); padding:36px; border-radius:var(--radius-md); box-shadow:var(--shadow-md); border:1px solid var(--border-subtle);">
+            <div style="text-align:center; margin-bottom:24px;">
+                <h3 style="font-size:1.8rem; color:var(--primary);">Request Corporate / Wedding Hamper Quote</h3>
+                <p style="color:var(--text-muted); font-size:0.9rem;">Get tiered volume discounts up to 30% on bulk gifting orders over 25 units.</p>
+            </div>
+
+            <form id="contact-form">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                    <div class="form-group">
+                        <label>Contact Person Name *</label>
+                        <input type="text" id="contact-name" required placeholder="Aman Singh">
+                    </div>
+                    <div class="form-group">
+                        <label>Company / Organization Name</label>
+                        <input type="text" id="contact-company" placeholder="e.g. Google, TechCorp">
+                    </div>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                    <div class="form-group">
+                        <label>Corporate Email *</label>
+                        <input type="email" id="contact-email" required placeholder="corporate@company.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Mobile Number *</label>
+                        <input type="tel" id="contact-phone" required placeholder="+91 9876543210">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Estimated Quantity (Boxes)</label>
+                    <select id="contact-subject">
+                        <option value="Bulk Hampers (25 - 50 boxes)">25 – 50 boxes (15% Off)</option>
+                        <option value="Bulk Hampers (50 - 150 boxes)">50 – 150 boxes (20% Off)</option>
+                        <option value="Bulk Hampers (150+ boxes)">150+ boxes (Custom Velvet Boxes & 30% Off)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Customization Details & Delivery Deadline *</label>
+                    <textarea id="contact-message" rows="3" required placeholder="Mention your preferred sweets mix, custom branding requirements, and expected delivery date..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%;">
+                    <i class="fas fa-paper-plane"></i> Submit Quotation Request
+                </button>
+            </form>
+        </div>
     </main>
 
+    <!-- Footer -->
     <footer class="main-footer">
-        <div class="container footer-grid">...</div>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <h4 style="font-size:1.5rem; color:#FFF;">Madhuraj Sweet House</h4>
+                <p>Pure cow desi ghee sweets and corporate festive hampers since 1990.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="shop.html">Shop Sweets</a></li>
+                    <li><a href="gifting.html">Corporate Gifting</a></li>
+                    <li><a href="achievements.html">Our Legacy</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Customer Support</h4>
+                <ul>
+                    <li><a href="trackorder.html">Track Order</a></li>
+                    <li><a href="admin.html">Admin Portal</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Promo Code</h4>
+                <p>Apply coupon <strong style="color:var(--accent);">FESTIVE20</strong> for 20% discount on hamper purchases above ₹1200!</p>
+            </div>
+        </div>
         <div class="footer-bottom"><p>&copy; 2025 Madhuraj Sweet House. All Rights Reserved.</p></div>
     </footer>
-    <script src="data.js"></script>
+
     <script src="script.js"></script>
+    <script>
+        // Render gifting hampers into the gifting-grid
+        window.addEventListener('DOMContentLoaded', async () => {
+            const grid = document.getElementById('gifting-grid');
+            if (grid) {
+                try {
+                    const res = await fetch('/api/products?category=gifting');
+                    const data = await res.json();
+                    if (data.success && data.data.length > 0) {
+                        grid.innerHTML = data.data.map(createProductCardHTML).join('');
+                    } else {
+                        // Fallback show all products
+                        const allRes = await fetch('/api/products');
+                        const allData = await allRes.json();
+                        grid.innerHTML = allData.data.slice(0, 4).map(createProductCardHTML).join('');
+                    }
+                } catch (e) {
+                    console.error('Failed to load hampers:', e);
+                }
+            }
+        });
+    </script>
 </body>
 </html>

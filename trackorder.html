@@ -3,78 +3,328 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Track Your Order | Madhuraj Sweet House</title>
+    <title>Live Order Tracking | Madhuraj Sweet House</title>
+    <meta name="description" content="Track your freshly prepared Indian sweets order in real time with our live delivery pipeline.">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
+
+    <!-- Header -->
     <header class="main-header">
-        <div class="header-top-bar">...</div>
+        <div class="header-top-bar">
+            <div class="container top-content">
+                <p>✨ Free Shipping on Orders Above ₹999 | Flat 15% Off with Code <strong>MITHAI15</strong></p>
+                <div class="marquee_design" role="note">
+                    <span>🍯 <strong>मधुराज स्वीट्स:</strong> 1990 से परंपरा, शुद्ध देशी घी और मिठास का अटूट विश्वास ✨</span>
+                </div>
+            </div>
+        </div>
         <div class="container header-main-nav">
-            <div class="logo"><a href="index.html">Madhuraj <span class="logo-accent">Sweet House</span></a></div>
+            <div class="logo">
+                <a href="index.html">Madhuraj <span class="logo-accent">Sweet House</span></a>
+            </div>
+            
             <nav class="main-nav-links">
-                <a href="shop.html">Shop All</a>
+                <a href="shop.html">Shop All Sweets</a>
                 <a href="gifting.html">Gifting & Hampers</a>
                 <a href="achievements.html">Our Legacy</a>
                 <a href="contact.html">Contact Us</a>
                 <a href="trackorder.html" class="active">Track Order</a>
+                <a href="admin.html" class="admin-header-badge" style="display:inline-flex; align-items:center; gap:4px;"><i class="fas fa-shield-alt"></i> Admin</a>
             </nav>
-            <div class="header-actions">...</div>
-        </div>
-        <div id="search-bar-mobile" class="search-bar-mobile container">...</div>
-    </header>
 
-    <main class="container">
-        <div class="products-section" style="padding-top: 50px;">
-            <h2 class="section-heading">🚚 Track Your Order</h2>
-            <p class="section-subheading">Enter your Order ID to see the latest status of your delivery.</p>
-
-            <div style="max-width: 600px; margin: 30px auto; padding: 30px; background: var(--bg-white); border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); text-align: center;">
-                <form id="track-form" onsubmit="trackOrder(event)">
-                    <input type="text" placeholder="Enter Order ID (e.g., MS123456)" required id="order-id-input" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem;">
-                    <button class="btn btn-primary" type="submit" id="track-button">Track Now</button>
-                </form>
-                <div id="tracking-result" style="margin-top: 30px; font-size: 1.1rem; min-height: 50px;">
-                    </div>
+            <div class="header-actions">
+                <div id="user-nav-greeting"></div>
+                <button id="profile-btn" aria-label="User Profile" title="Profile/Login"><i class="fas fa-user-circle"></i></button>
+                <button id="cart-btn" aria-label="Shopping Cart" title="View Cart">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span id="cart-count" class="cart-badge">0</span>
+                </button>
+                <button id="menu-toggle" class="menu-toggle" aria-label="Toggle Navigation"><i class="fas fa-bars"></i></button>
             </div>
         </div>
+    </header>
+
+    <!-- Slide-Over Cart Drawer -->
+    <div id="drawer-backdrop" class="drawer-backdrop"></div>
+    <div id="cart-drawer" class="cart-drawer">
+        <div class="drawer-header">
+            <h3><i class="fas fa-shopping-bag"></i> Your Sweet Box</h3>
+            <button id="drawer-close-btn" class="drawer-close-btn">&times;</button>
+        </div>
+        <div id="cart-drawer-body" class="drawer-body"></div>
+        <div class="drawer-footer">
+            <div class="coupon-box">
+                <input type="text" id="coupon-input" placeholder="Promo Code (e.g. MITHAI15)">
+                <button class="btn btn-secondary btn-sm" onclick="applyPromoCoupon()">Apply</button>
+            </div>
+            <div id="coupon-msg" class="coupon-msg"></div>
+            <div class="price-summary-row">
+                <span>Subtotal:</span>
+                <strong id="cart-drawer-subtotal">₹0</strong>
+            </div>
+            <div class="price-summary-row" id="cart-drawer-discount-row" style="display:none; color:#059669;">
+                <span>Discount:</span>
+                <strong id="cart-drawer-discount">- ₹0</strong>
+            </div>
+            <div class="price-summary-row total-row">
+                <span>Total to Pay:</span>
+                <strong id="cart-drawer-total">₹0</strong>
+            </div>
+            <button id="drawer-checkout-btn" class="btn btn-primary" onclick="openCheckoutModal()">Proceed to Checkout <i class="fas fa-arrow-right"></i></button>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="modal-login" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Welcome to Madhuraj</h3>
+                <button class="drawer-close-btn modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="auth-tabs">
+                    <button class="auth-tab-btn active" id="tab-login-btn" onclick="switchAuthTab('login')">Log In</button>
+                    <button class="auth-tab-btn" id="tab-register-btn" onclick="switchAuthTab('register')">Create Account</button>
+                </div>
+                <div id="login-form-container">
+                    <form id="form-login">
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="login-email" required placeholder="demo@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="login-password" required placeholder="••••••••">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width:100%;">Sign In</button>
+                    </form>
+                    <div style="margin-top:16px; padding:12px; background:#F8F4EF; border-radius:6px; font-size:0.85rem; border:1px dashed #D5C6BA;">
+                        <strong style="color:var(--primary); display:block; margin-bottom:6px;">⚡ Quick Evaluator Demo Fill:</strong>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="useDemoCredentials('customer')" style="margin-right:6px;">Demo Customer</button>
+                        <button type="button" class="btn btn-gold btn-sm" onclick="useDemoCredentials('admin')">Admin Demo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-checkout" class="modal-overlay">
+        <div class="modal-card" style="max-width:560px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-lock" style="color:var(--accent-dark);"></i> Express Checkout</h3>
+                <button class="drawer-close-btn modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="form-checkout" onsubmit="handleCheckoutSubmit(event)">
+                    <div class="form-group">
+                        <label>Full Name *</label>
+                        <input type="text" id="checkout-name" required placeholder="Recipient's Name">
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        <div class="form-group"><label>Email *</label><input type="email" id="checkout-email" required></div>
+                        <div class="form-group"><label>Phone *</label><input type="tel" id="checkout-phone" required></div>
+                    </div>
+                    <div class="form-group"><label>Address *</label><textarea id="checkout-address" rows="2" required></textarea></div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        <div class="form-group"><label>City *</label><input type="text" id="checkout-city" required value="New Delhi"></div>
+                        <div class="form-group"><label>Pincode *</label><input type="text" id="checkout-pincode" required value="110001"></div>
+                    </div>
+                    <button type="submit" id="place-order-btn" class="btn btn-primary" style="width:100%; margin-top:10px;">Place Order</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container" style="padding-top: 50px;">
+        <div style="text-align: center;">
+            <h1 class="section-heading">🚚 Live Sweet Dispatch Tracker</h1>
+            <p class="section-subheading">Enter your Order ID to monitor preparation, ghee quality check, and express delivery stages in real-time.</p>
+        </div>
+
+        <div style="max-width: 680px; margin: 0 auto 30px; background: var(--bg-white); padding: 30px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border-subtle); text-align: center;">
+            <form id="track-form" onsubmit="executeOrderTracking(event)" style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <input type="text" id="order-id-input" placeholder="Enter Order ID (e.g. MS-1001, MS-1002)" required style="flex-grow: 1; padding: 14px 18px; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); font-size: 1rem; text-transform: uppercase;">
+                <button type="submit" id="track-submit-btn" class="btn btn-primary"><i class="fas fa-search-location"></i> Track Now</button>
+            </form>
+
+            <div style="margin-top: 14px; font-size: 0.85rem; color: var(--text-muted);">
+                <span>Quick Test IDs: </span>
+                <button type="button" onclick="quickTrack('MS-1001')" class="btn btn-secondary btn-sm" style="padding: 3px 8px; font-size: 0.78rem; margin: 0 4px;">MS-1001 (Out for Delivery)</button>
+                <button type="button" onclick="quickTrack('MS-1002')" class="btn btn-secondary btn-sm" style="padding: 3px 8px; font-size: 0.78rem;">MS-1002 (Preparing Fresh)</button>
+            </div>
+        </div>
+
+        <!-- Tracking Results Container -->
+        <div id="tracking-display-area"></div>
     </main>
 
-    <footer class="main-footer">
-        <div class="container footer-grid">...</div>
-        <div class="footer-bottom"><p>&copy; 2025 Madhuraj Sweet House. All Rights Reserved.</p></div>
+    <!-- Footer -->
+    <footer class="main-footer" style="margin-top: 60px;">
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <h4 style="font-size:1.5rem; color:#FFF;">Madhuraj Sweet House</h4>
+                <p>Pure Cow Ghee Confectionery Since 1990. Handcrafted with traditional expertise and delivered with love.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="shop.html">Shop All Mithai</a></li>
+                    <li><a href="gifting.html">Corporate Hampers</a></li>
+                    <li><a href="achievements.html">Our Legacy</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="trackorder.html">Track Order</a></li>
+                    <li><a href="admin.html">Admin Portal</a></li>
+                    <li><a href="contact.html">Store Contacts</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Promo Offer</h4>
+                <p>Use coupon <strong style="color:var(--accent);">MITHAI15</strong> for 15% discount on all orders above ₹500.</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Madhuraj Sweet House. All Rights Reserved.</p>
+        </div>
     </footer>
-    <script>
-        function trackOrder(event) {
-            event.preventDefault();
-            const orderId = document.getElementById('order-id-input').value.trim().toUpperCase();
-            const resultEl = document.getElementById('tracking-result');
-            const button = document.getElementById('track-button');
-            
-            button.disabled = true;
-            resultEl.innerHTML = '<i class="fas fa-spinner fa-spin" style="color:var(--primary);"></i> Loading status...';
 
-            setTimeout(() => {
-                let status;
-                let message;
-
-                if (orderId === 'MS123456') {
-                    status = 'Shipped';
-                    message = '<p style="color: #2a9d8f; font-weight: 700;">Order **MS123456** is **OUT FOR DELIVERY** and expected by 6 PM today!</p>';
-                } else if (orderId === 'MS789012') {
-                    status = 'Processing';
-                    message = '<p style="color: #f7c948; font-weight: 700;">Order **MS789012** is currently being **PREPARED FRESH** in our kitchen. Will ship tomorrow.</p>';
-                } else {
-                    status = 'Not Found';
-                    message = '<p style="color: #e63946; font-weight: 700;">Order ID not found. Please check your confirmation email or contact support.</p>';
-                }
-
-                resultEl.innerHTML = message;
-                button.disabled = false;
-            }, 1500); // Simulate network delay
-        }
-    </script>
-    <script src="data.js"></script>
     <script src="script.js"></script>
+    <script>
+        async function executeOrderTracking(e) {
+            if (e) e.preventDefault();
+            const input = document.getElementById('order-id-input');
+            const code = input.value.trim().toUpperCase();
+            if (!code) return;
+
+            const area = document.getElementById('tracking-display-area');
+            const btn = document.getElementById('track-submit-btn');
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking Database...';
+
+            area.innerHTML = `
+                <div style="text-align:center; padding: 40px;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2.5rem; color: var(--primary);"></i>
+                    <p style="margin-top:12px; color:var(--text-muted);">Contacting kitchen & courier logistics...</p>
+                </div>
+            `;
+
+            try {
+                const res = await fetch(`/api/orders/track/${code}`);
+                const data = await res.json();
+
+                if (data.success) {
+                    const order = data.order;
+                    const stagePercent = (order.currentStageIndex / (order.stages.length - 1)) * 100;
+
+                    const icons = [
+                        'fa-clipboard-check',
+                        'fa-fire-burner',
+                        'fa-shield-heart',
+                        'fa-box-archive',
+                        'fa-truck-fast',
+                        'fa-house-chimney-user'
+                    ];
+
+                    area.innerHTML = `
+                        <div class="tracker-container">
+                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; border-bottom:1px solid #EAE0D5; padding-bottom:18px;">
+                                <div>
+                                    <span style="font-size:0.8rem; color:#888; text-transform:uppercase; font-weight:700;">TRACKING NUMBER</span>
+                                    <h2 style="font-size:1.8rem; color:var(--primary); margin:2px 0;">${order.tracking_code}</h2>
+                                    <span style="font-size:0.85rem; color:var(--text-muted);">Placed on: ${new Date(order.created_at).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}</span>
+                                </div>
+                                <div>
+                                    <span class="status-pill status-${order.status.replace(/\s+/g, '')}" style="font-size:1rem; padding:8px 18px;">
+                                        <i class="fas fa-circle" style="font-size:0.6rem; vertical-align:middle; margin-right:6px;"></i> ${order.status}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- 6-Stage Timeline -->
+                            <div class="tracking-timeline">
+                                <div class="timeline-progress-bar" style="width: calc(${stagePercent}% - 60px);"></div>
+                                ${order.stages.map((stg, i) => `
+                                    <div class="timeline-node ${stg.completed ? 'completed' : ''} ${stg.isCurrent ? 'current' : ''}">
+                                        <div class="node-icon-circle">
+                                            <i class="fas ${stg.completed ? 'fa-check' : icons[i]}"></i>
+                                        </div>
+                                        <div class="node-title">${stg.label}</div>
+                                        <div class="node-desc">${stg.desc}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+
+                            <!-- Order Details Grid -->
+                            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:24px; margin-top:30px; padding-top:24px; border-top:1px dashed #EAE0D5;">
+                                <div style="background:#FAF6F1; padding:20px; border-radius:8px;">
+                                    <h4 style="margin-bottom:10px; color:var(--primary); font-size:1.05rem;"><i class="fas fa-map-marker-alt" style="color:var(--accent-dark);"></i> Delivery Details</h4>
+                                    <p><strong>Recipient:</strong> ${order.customer_name}</p>
+                                    <p><strong>Address:</strong> ${order.delivery_address}</p>
+                                    <p><strong>Payment:</strong> ${order.payment_method} (${order.payment_status})</p>
+                                </div>
+
+                                <div style="background:#FAF6F1; padding:20px; border-radius:8px;">
+                                    <h4 style="margin-bottom:10px; color:var(--primary); font-size:1.05rem;"><i class="fas fa-cookie-bite" style="color:var(--accent-dark);"></i> Sweet Items in Package</h4>
+                                    <div style="max-height:160px; overflow-y:auto;">
+                                        ${order.items.map(item => `
+                                            <div style="display:flex; justify-content:space-between; font-size:0.9rem; padding:6px 0; border-bottom:1px dashed #DDD;">
+                                                <span>${item.quantity}x ${item.name} (${item.weight || '500g'})</span>
+                                                <strong>₹${item.lineTotal || (item.price * item.quantity)}</strong>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                    <div style="margin-top:10px; padding-top:8px; border-top:2px solid #E2D7CC; display:flex; justify-content:space-between; font-weight:800; font-size:1.1rem; color:var(--primary);">
+                                        <span>Total Paid:</span>
+                                        <span>₹${order.total}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    area.innerHTML = `
+                        <div style="max-width:580px; margin:20px auto; background:#FFF5F5; padding:30px; border-radius:12px; border:1px solid #FED7D7; text-align:center;">
+                            <i class="fas fa-exclamation-triangle" style="font-size:2.5rem; color:#E53E3E; margin-bottom:12px;"></i>
+                            <h3 style="color:#C53030; margin-bottom:8px;">Order Not Found</h3>
+                            <p style="color:#742A2A;">${data.message}</p>
+                            <p style="margin-top:14px; font-size:0.9rem; color:#888;">Try testing with pre-seeded order IDs: <strong>MS-1001</strong> or <strong>MS-1002</strong></p>
+                        </div>
+                    `;
+                }
+            } catch (err) {
+                area.innerHTML = `
+                    <div style="text-align:center; padding:30px; color:#E53E3E;">
+                        <i class="fas fa-unlink" style="font-size:2rem; margin-bottom:8px;"></i>
+                        <p>Server error during tracking. Please verify your backend connection.</p>
+                    </div>
+                `;
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-search-location"></i> Track Now';
+            }
+        }
+
+        function quickTrack(id) {
+            document.getElementById('order-id-input').value = id;
+            executeOrderTracking();
+        }
+
+        // Auto-run if query param ?orderId=MS-xxxx exists
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const orderId = params.get('orderId');
+            if (orderId) {
+                document.getElementById('order-id-input').value = orderId;
+                executeOrderTracking();
+            }
+        });
+    </script>
 </body>
 </html>
